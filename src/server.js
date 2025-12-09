@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: ['https://ghinc.github.io', 'http://localhost:8080', 'http://localhost:3000'],
+  origin: ['https://ghinc.github.io/bot_tp_front', 'https://ghinc.github.io', 'http://localhost:8080', 'http://localhost:3000'],
   credentials: true
 }));
 app.use(express.json());
