@@ -10,10 +10,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+// Middleware CORS - Configuration étendue pour Vercel
 app.use(cors({
   origin: ['https://ghinc.github.io/bot_tp_front', 'https://ghinc.github.io', 'http://localhost:8080', 'http://localhost:3000'],
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200
 }));
 app.use(express.json());
 
@@ -285,22 +288,31 @@ app.use((req, res) => {
 });
 
 // Nettoyage automatique des conversations inactives toutes les 30 minutes
-setInterval(() => {
-  const deleted = conversationManager.cleanupInactive(60);
-  if (deleted > 0) {
-    console.log(`[Cleanup] ${deleted} conversation(s) inactive(s) supprimée(s)`);
-  }
-}, 30 * 60 * 1000);
+// Note: désactivé en environnement serverless (Vercel)
+if (process.env.NODE_ENV !== 'production') {
+  setInterval(() => {
+    const deleted = conversationManager.cleanupInactive(60);
+    if (deleted > 0) {
+      console.log(`[Cleanup] ${deleted} conversation(s) inactive(s) supprimée(s)`);
+    }
+  }, 30 * 60 * 1000);
+}
 
-// Démarrage du serveur
-app.listen(PORT, () => {
-  console.log(`\n🚀 Serveur Bot TP démarré sur le port ${PORT}`);
-  console.log(`📍 URL: http://localhost:${PORT}`);
-  console.log(`🏥 Health check: http://localhost:${PORT}/health`);
-  console.log(`🤖 OpenAI configuré: ${openaiService.isConfigured() ? '✅' : '❌'}\n`);
+// Démarrage du serveur (uniquement en développement local)
+// En production sur Vercel, l'app est exportée comme serverless function
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`\n🚀 Serveur Bot TP démarré sur le port ${PORT}`);
+    console.log(`📍 URL: http://localhost:${PORT}`);
+    console.log(`🏥 Health check: http://localhost:${PORT}/health`);
+    console.log(`🤖 OpenAI configuré: ${openaiService.isConfigured() ? '✅' : '❌'}\n`);
 
-  if (!openaiService.isConfigured()) {
-    console.warn('⚠️  ATTENTION: Clé API OpenAI non configurée!');
-    console.warn('   Copiez .env.example vers .env et ajoutez votre clé API\n');
-  }
-});
+    if (!openaiService.isConfigured()) {
+      console.warn('⚠️  ATTENTION: Clé API OpenAI non configurée!');
+      console.warn('   Copiez .env.example vers .env et ajoutez votre clé API\n');
+    }
+  });
+}
+
+// Export pour Vercel (serverless)
+export default app;

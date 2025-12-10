@@ -3,7 +3,9 @@
     "allow": [
       "Bash(git init:*)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Bot TP backend with OpenAI integration\n\n- Express server with REST API endpoints\n- OpenAI service for GPT-4-mini integration\n- Conversation manager with history tracking\n- Prompt engineering with multiple templates (TP assistant, programming tutor, debug helper)\n- Session management and cleanup\n- Complete API documentation\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Bot TP backend with OpenAI integration\n\n- Express server with REST API endpoints\n- OpenAI service for GPT-4-mini integration\n- Conversation manager with history tracking\n- Prompt engineering with multiple templates (TP assistant, programming tutor, debug helper)\n- Session management and cleanup\n- Complete API documentation\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git commit:*)",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []
