@@ -281,10 +281,54 @@ app.get('/api/prompts', (req, res) => {
 
 // Gestion des erreurs 404
 app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    error: 'Route non trouvée',
-  });
+  res.status(404).send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>404 - TEST VERCEL DEPLOYMENT</title>
+      <style>
+        body {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          font-family: Arial, sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+        }
+        .container {
+          text-align: center;
+          padding: 40px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 20px;
+          backdrop-filter: blur(10px);
+        }
+        h1 {
+          font-size: 5em;
+          margin: 0;
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        p {
+          font-size: 1.5em;
+          margin: 20px 0;
+        }
+        .timestamp {
+          font-size: 0.9em;
+          opacity: 0.8;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>🚀 404</h1>
+        <p>VERCEL DEPLOYMENT TEST - Route non trouvée</p>
+        <p>Path: ${req.path}</p>
+        <p class="timestamp">Déployé à: ${new Date().toISOString()}</p>
+      </div>
+    </body>
+    </html>
+  `);
 });
 
 // Nettoyage automatique des conversations inactives toutes les 30 minutes
